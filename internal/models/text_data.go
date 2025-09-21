@@ -11,6 +11,7 @@ type TextData struct {
 	Text       string    `json:"text"`
 	UserID     int       `json:"user_id"`
 	CreatedAt  time.Time `json:"created_at"`
+	Meta       string    `json:"meta"`
 }
 
 func (td *TextData) Bind(r *http.Request) error {
@@ -22,6 +23,7 @@ func (td *TextData) Bind(r *http.Request) error {
 
 type UpdateTextDataRequest struct {
 	Text string `json:"text"`
+	Meta string `json:"meta"`
 }
 
 func (td *UpdateTextDataRequest) Bind(r *http.Request) error {

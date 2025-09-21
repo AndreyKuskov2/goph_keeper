@@ -9,7 +9,7 @@ import (
 
 func (pg *Postgres) CreateTextData(ctx context.Context, textData *models.TextData) (int, error) {
 	var textDataID int
-	if err := pg.DB.QueryRow(ctx, createTextData, textData.Text, textData.UserID).Scan(&textDataID); err != nil {
+	if err := pg.DB.QueryRow(ctx, createTextData, textData.Text, textData.UserID, textData.Meta).Scan(&textDataID); err != nil {
 		return 0, err
 	}
 	return textDataID, nil
@@ -46,7 +46,7 @@ func (pg *Postgres) GetTextDataByIDAndUserID(ctx context.Context, textDataID, us
 }
 
 func (pg *Postgres) UpdateTextDataByIDAndUserID(ctx context.Context, textData models.UpdateTextDataRequest, textDataID, userID int) error {
-	if _, err := pg.DB.Exec(ctx, updateTextDataByIDAndUserID, textData.Text, textDataID, userID); err != nil {
+	if _, err := pg.DB.Exec(ctx, updateTextDataByIDAndUserID, textData.Text, textData.Meta, textDataID, userID); err != nil {
 		return err
 	}
 	return nil

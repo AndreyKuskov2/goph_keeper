@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS credentials(
     password VARCHAR(128) NOT NULL,
     user_id INTEGER,
     created_at TIMESTAMP DEFAULT NOW(),
+    meta TEXT,
 
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
@@ -20,6 +21,7 @@ CREATE TABLE IF NOT EXISTS text_data(
     text TEXT NOT NULL,
     user_id INTEGER,
     created_at TIMESTAMP DEFAULT NOW(),
+    meta TEXT,
 
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
@@ -29,6 +31,7 @@ CREATE TABLE IF NOT EXISTS binaries_data(
     binary_data BYTEA,
     user_id INTEGER,
     created_at TIMESTAMP DEFAULT NOW(),
+    meta TEXT,
 
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
@@ -41,6 +44,7 @@ CREATE TABLE IF NOT EXISTS bank_cards(
     expiration_date TIMESTAMP,
     user_id INTEGER,
     created_at TIMESTAMP DEFAULT NOW(),
+    meta TEXT,
 
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );

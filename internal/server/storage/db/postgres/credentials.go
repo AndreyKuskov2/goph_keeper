@@ -9,7 +9,7 @@ import (
 
 func (pg *Postgres) CreateCredentials(ctx context.Context, credentials *models.Credentials) (int, error) {
 	var credentialsID int
-	if err := pg.DB.QueryRow(ctx, createCredentials, credentials.Login, credentials.Password, credentials.UserID).Scan(&credentialsID); err != nil {
+	if err := pg.DB.QueryRow(ctx, createCredentials, credentials.Login, credentials.Password, credentials.UserID, credentials.Meta).Scan(&credentialsID); err != nil {
 		return 0, err
 	}
 	return credentialsID, nil
@@ -46,7 +46,7 @@ func (pg *Postgres) GetCredentialsByIDAndUserID(ctx context.Context, credentials
 }
 
 func (pg *Postgres) UpdateCredentialsByIDAndUserID(ctx context.Context, credentials models.UpdateCredentialsRequest, credentialsID, userID int) error {
-	if _, err := pg.DB.Exec(ctx, updateCredentialsByIDAndUserID, credentials.Login, credentials.Password, credentialsID, userID); err != nil {
+	if _, err := pg.DB.Exec(ctx, updateCredentialsByIDAndUserID, credentials.Login, credentials.Password, credentials.Meta, credentialsID, userID); err != nil {
 		return err
 	}
 	return nil

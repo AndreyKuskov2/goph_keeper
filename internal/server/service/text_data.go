@@ -23,18 +23,18 @@ func NewGophKeeperTextDataService(storage GophKeeperTextDataStorager) *GophKeepe
 	}
 }
 
-func (s *GophKeeperTextDataService) CreateCredentials(ctx context.Context, textData *models.TextData) (int, error) {
+func (s *GophKeeperTextDataService) CreateTextData(ctx context.Context, textData *models.TextData) (int, error) {
 	return s.storage.CreateTextData(ctx, textData)
 }
-func (s *GophKeeperTextDataService) GetCredentialsByUserID(ctx context.Context, userID int) ([]models.TextData, error) {
+func (s *GophKeeperTextDataService) GetTextDataByUserID(ctx context.Context, userID int) ([]models.TextData, error) {
 	return s.storage.GetTextDataByUserID(ctx, userID)
 }
-func (s *GophKeeperTextDataService) GetCredentialsByIDAndUserID(ctx context.Context, credentialsID, userID int) ([]models.TextData, error) {
+func (s *GophKeeperTextDataService) GetTextDataByIDAndUserID(ctx context.Context, credentialsID, userID int) ([]models.TextData, error) {
 	return s.storage.GetTextDataByIDAndUserID(ctx, credentialsID, userID)
 }
-func (s *GophKeeperTextDataService) UpdateCredentialsByIDAndUserID(ctx context.Context, credentials models.UpdateTextDataRequest, credentialsID, userID int) error {
+func (s *GophKeeperTextDataService) UpdateTextDataByIDAndUserID(ctx context.Context, credentials models.UpdateTextDataRequest, credentialsID, userID int) error {
 	return s.storage.UpdateTextDataByIDAndUserID(ctx, credentials, credentialsID, userID)
 }
-func (s *GophKeeperTextDataService) DeleteCredentialsByIDAndUserID(ctx context.Context, credentialsID, userID int) error {
+func (s *GophKeeperTextDataService) DeleteTextDataByIDAndUserID(ctx context.Context, credentialsID, userID int) error {
 	return s.storage.DeleteTextDataByIDAndUserID(ctx, credentialsID, userID)
 }

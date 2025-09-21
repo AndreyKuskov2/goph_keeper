@@ -29,6 +29,9 @@ func GophKeeperHTTPRouter(cfg *config.Config, storage storage.Storager) http.Han
 		r.Post("/login", userHandler.LoginUserHandler)
 
 		r.Mount("/credentials", newCredentialsRouter(cfg, storage))
+		r.Mount("/text-data", newTextDataRouter(cfg, storage))
+		r.Mount("/bank-cards", newBankCardsRouter(cfg, storage))
+		r.Mount("/binaries", newBinariesRouter(cfg, storage))
 	})
 
 	return r

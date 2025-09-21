@@ -24,6 +24,18 @@ type Storager interface {
 	UpdateTextDataByIDAndUserID(ctx context.Context, textData models.UpdateTextDataRequest, textDataID, userID int) error
 	DeleteTextDataByIDAndUserID(ctx context.Context, textDataID, userID int) error
 
+	CreateBankCards(ctx context.Context, bankCards *models.BankCards) (int, error)
+	GetBankCardsByUserID(ctx context.Context, userID int) ([]models.BankCards, error)
+	GetBankCardsByIDAndUserID(ctx context.Context, bankCardID, userID int) ([]models.BankCards, error)
+	UpdateBankCardsByIDAndUserID(ctx context.Context, bankCard models.UpdateBankCardsRequest, bankCardID, userID int) error
+	DeleteBankCardsByIDAndUserID(ctx context.Context, bankCardID, userID int) error
+
+	CreateBinariesData(ctx context.Context, binariesData *models.BinariesData) (int, error)
+	GetBinariesDataByUserID(ctx context.Context, userID int) ([]models.BinariesData, error)
+	GetBinariesDataByIDAndUserID(ctx context.Context, binariesDataID, userID int) ([]models.BinariesData, error)
+	UpdateBinariesDataByIDAndUserID(ctx context.Context, binaryData models.UpdateBinariesDataRequest, binariesDataID, userID int) error
+	DeleteBinariesDataByIDAndUserID(ctx context.Context, binariesDataID, userID int) error
+
 	Ping(ctx context.Context) error
 	Close()
 }

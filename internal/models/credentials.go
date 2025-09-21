@@ -12,6 +12,7 @@ type Credentials struct {
 	Password      string    `json:"password"`
 	UserID        int       `json:"user_id"`
 	CreatedAt     time.Time `json:"created_at"`
+	Meta          string    `json:"meta"`
 }
 
 func (c *Credentials) Bind(r *http.Request) error {
@@ -27,6 +28,7 @@ func (c *Credentials) Bind(r *http.Request) error {
 type UpdateCredentialsRequest struct {
 	Login    string `json:"login"`
 	Password string `json:"password"`
+	Meta     string `json:"meta"`
 }
 
 func (c *UpdateCredentialsRequest) Bind(r *http.Request) error {
