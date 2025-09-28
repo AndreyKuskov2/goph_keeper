@@ -1,0 +1,6 @@
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS credentials;
+DROP TABLE IF EXISTS text_data;
+DROP TABLE IF EXISTS binaries_data;
+DROP TABLE IF EXISTS bank_cards;
+DROP TABLE IF EXISTS binaries_data;
