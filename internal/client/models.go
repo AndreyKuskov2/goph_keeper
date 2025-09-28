@@ -98,22 +98,19 @@ type UpdateBinariesDataRequest struct {
 	Meta       string `json:"meta"`
 }
 
-// Helper function to parse JSON response
+// Helper functions
 func ParseJSONResponse(data []byte, v interface{}) error {
 	return json.Unmarshal(data, v)
 }
 
-// Helper function to create JSON request
 func CreateJSONRequest(v interface{}) ([]byte, error) {
 	return json.Marshal(v)
 }
 
-// Helper function to format time for display
 func FormatTime(t time.Time) string {
 	return t.Format("2006-01-02 15:04:05")
 }
 
-// Helper function to parse time from string
 func ParseTime(timeStr string) (time.Time, error) {
 	return time.Parse("2006-01-02", timeStr)
 }

@@ -13,6 +13,8 @@ import (
 	"github.com/go-chi/render"
 )
 
+// GophKeeperCredentialsServicer defines the interface for credentials service operations.
+// It provides methods for creating, retrieving, updating, and deleting credentials.
 type GophKeeperCredentialsServicer interface {
 	CreateCredentials(ctx context.Context, credentials *models.Credentials) (int, error)
 	GetCredentialsByUserID(ctx context.Context, userID int) ([]models.Credentials, error)
@@ -21,11 +23,14 @@ type GophKeeperCredentialsServicer interface {
 	DeleteCredentialsByIDAndUserID(ctx context.Context, credentialsID, userID int) error
 }
 
+// GophKeeperCredentialsHandlers handles HTTP requests related to credentials management.
+// It provides endpoints for creating, retrieving, updating, and deleting credentials.
 type GophKeeperCredentialsHandlers struct {
 	service GophKeeperCredentialsServicer
 	cfg     *config.Config
 }
 
+// NewGophKeeperCredentialsHandlers creates a new instance of GophKeeperCredentialsHandlers.
 func NewGophKeeperCredentialsHandlers(service GophKeeperCredentialsServicer, cfg *config.Config) *GophKeeperCredentialsHandlers {
 	return &GophKeeperCredentialsHandlers{
 		service: service,
@@ -33,6 +38,7 @@ func NewGophKeeperCredentialsHandlers(service GophKeeperCredentialsServicer, cfg
 	}
 }
 
+// CreateCredentials handles HTTP requests for creating new credentials.
 func (gh *GophKeeperCredentialsHandlers) CreateCredentials(w http.ResponseWriter, r *http.Request) {
 	var credentials models.Credentials
 	if err := render.Bind(r, &credentials); err != nil {
@@ -67,6 +73,7 @@ func (gh *GophKeeperCredentialsHandlers) CreateCredentials(w http.ResponseWriter
 	responseOK(w, r, http.StatusCreated, map[string]int{"id": credentialsID}, "credentials succesfully created")
 }
 
+// GetCredentialsByUserID handles HTTP requests for retrieving credentials by user ID.
 func (gh *GophKeeperCredentialsHandlers) GetCredentialsByUserID(w http.ResponseWriter, r *http.Request) {
 	claims, err := jwt.GetJwtClaims(r)
 	if err != nil {
@@ -92,6 +99,7 @@ func (gh *GophKeeperCredentialsHandlers) GetCredentialsByUserID(w http.ResponseW
 	responseOK(w, r, http.StatusOK, credentials, "OK")
 }
 
+// GetCredentialsByIDAndUserID handles HTTP requests for retrieving credentials by ID and user ID.
 func (gh *GophKeeperCredentialsHandlers) GetCredentialsByIDAndUserID(w http.ResponseWriter, r *http.Request) {
 	credentialsID, userID, err := gh.getCredentialsIDAndUserID(w, r)
 	if err != nil {
@@ -109,6 +117,7 @@ func (gh *GophKeeperCredentialsHandlers) GetCredentialsByIDAndUserID(w http.Resp
 	responseOK(w, r, http.StatusOK, credentials, "OK")
 }
 
+// UpdateCredentialsByIDAndUserID handles HTTP requests for updating credentials by ID and user ID.
 func (gh *GophKeeperCredentialsHandlers) UpdateCredentialsByIDAndUserID(w http.ResponseWriter, r *http.Request) {
 	credentialsID, userID, err := gh.getCredentialsIDAndUserID(w, r)
 	if err != nil {
@@ -131,6 +140,7 @@ func (gh *GophKeeperCredentialsHandlers) UpdateCredentialsByIDAndUserID(w http.R
 	responseOK(w, r, http.StatusOK, "", "updated")
 }
 
+// DeleteCredentialsByIDAndUserID handles HTTP requests for deleting credentials by ID and user ID.
 func (gh *GophKeeperCredentialsHandlers) DeleteCredentialsByIDAndUserID(w http.ResponseWriter, r *http.Request) {
 	credentialsID, userID, err := gh.getCredentialsIDAndUserID(w, r)
 	if err != nil {
@@ -146,6 +156,7 @@ func (gh *GophKeeperCredentialsHandlers) DeleteCredentialsByIDAndUserID(w http.R
 	responseOK(w, r, http.StatusNoContent, "", "deleted")
 }
 
+// getCredentialsIDAndUserID extracts credentials ID and user ID from the request.
 func (gh *GophKeeperCredentialsHandlers) getCredentialsIDAndUserID(w http.ResponseWriter, r *http.Request) (int, int, error) {
 	claims, err := jwt.GetJwtClaims(r)
 	if err != nil {

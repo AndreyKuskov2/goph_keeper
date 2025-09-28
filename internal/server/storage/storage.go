@@ -8,6 +8,7 @@ import (
 	"goph_keeper/internal/server/storage/db"
 )
 
+// Storager is the interface that wraps the basic methods for working with the storage.
 type Storager interface {
 	CreateUser(ctx context.Context, user models.User) (int, error)
 	GetUserByLogin(ctx context.Context, user models.UserLoginRequest) (int, error)
@@ -40,6 +41,7 @@ type Storager interface {
 	Close()
 }
 
+// NewStorager creates a new Storager instance.
 func NewStorager(ctx context.Context, cfg *config.Config) (Storager, error) {
 	if cfg.Database != nil {
 		return db.NewDBStorage(ctx, cfg.Database)

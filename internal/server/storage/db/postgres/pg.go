@@ -14,10 +14,12 @@ import (
 	"github.com/jackc/pgx/v5/stdlib"
 )
 
+// Postgres is the struct that contains the database connection pool.
 type Postgres struct {
 	DB *pgxpool.Pool
 }
 
+// NewPostgres creates a new Postgres instance.
 func NewPostgres(ctx context.Context, cfg *config.Database) (*Postgres, error) {
 	dbURI := fmt.Sprintf("postgres://%s:%s@%s:%d/%s", cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.Name)
 
@@ -39,6 +41,7 @@ func NewPostgres(ctx context.Context, cfg *config.Database) (*Postgres, error) {
 	}, nil
 }
 
+// initialMigrate applies all new migrations to the database.
 func initialMigrate(pool *pgxpool.Pool, migrationPath, dbName string) error {
 	db := stdlib.OpenDBFromPool(pool)
 
@@ -62,11 +65,13 @@ func initialMigrate(pool *pgxpool.Pool, migrationPath, dbName string) error {
 	return nil
 }
 
+// Ping checks if the database is available.
 func (pg *Postgres) Ping(ctx context.Context) error {
 	slog.Debug("ping pg")
 	return pg.DB.Ping(ctx)
 }
 
+// Close closes the database connection pool.
 func (pg *Postgres) Close() {
 	slog.Debug("close pg connection")
 	// FIX: После вызова Close поток выполнения блокируется. Понять как нормально закрывать соединение

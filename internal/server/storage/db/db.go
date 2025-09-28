@@ -8,6 +8,7 @@ import (
 	"goph_keeper/internal/server/storage/db/postgres"
 )
 
+// DBStorager is the interface that wraps the basic methods for working with the database.
 type DBStorager interface {
 	CreateUser(ctx context.Context, user models.User) (int, error)
 	GetUserByLogin(ctx context.Context, user models.UserLoginRequest) (int, error)
@@ -40,6 +41,7 @@ type DBStorager interface {
 	Close()
 }
 
+// NewDBStorage creates a new DBStorager instance.
 func NewDBStorage(ctx context.Context, cfg *config.Database) (DBStorager, error) {
 	if cfg.Type == "postgres" {
 		return postgres.NewPostgres(ctx, cfg)

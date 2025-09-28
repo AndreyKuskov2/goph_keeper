@@ -13,6 +13,8 @@ import (
 	"github.com/go-chi/render"
 )
 
+// GophKeeperBankCardsServicer defines the interface for bank cards service operations.
+// It provides methods for creating, retrieving, updating, and deleting bank cards.
 type GophKeeperBankCardsServicer interface {
 	CreateBankCards(ctx context.Context, bankCards *models.BankCards) (int, error)
 	GetBankCardsByUserID(ctx context.Context, userID int) ([]models.BankCards, error)
@@ -21,11 +23,14 @@ type GophKeeperBankCardsServicer interface {
 	DeleteBankCardsByIDAndUserID(ctx context.Context, bankCardID, userID int) error
 }
 
+// GophKeeperBankCardsHandlers handles HTTP requests related to bank cards management.
+// It provides endpoints for creating, retrieving, updating, and deleting bank cards.
 type GophKeeperBankCardsHandlers struct {
 	service GophKeeperBankCardsServicer
 	cfg     *config.Config
 }
 
+// NewGophKeeperBankCardsHandlers creates a new instance of GophKeeperBankCardsHandlers.
 func NewGophKeeperBankCardsHandlers(service GophKeeperBankCardsServicer, cfg *config.Config) *GophKeeperBankCardsHandlers {
 	return &GophKeeperBankCardsHandlers{
 		service: service,
@@ -33,6 +38,7 @@ func NewGophKeeperBankCardsHandlers(service GophKeeperBankCardsServicer, cfg *co
 	}
 }
 
+// CreateBankCards handles HTTP requests for creating new bank cards.
 func (gh *GophKeeperBankCardsHandlers) CreateBankCards(w http.ResponseWriter, r *http.Request) {
 	var bankCards models.BankCards
 	if err := render.Bind(r, &bankCards); err != nil {
@@ -67,6 +73,7 @@ func (gh *GophKeeperBankCardsHandlers) CreateBankCards(w http.ResponseWriter, r 
 	responseOK(w, r, http.StatusCreated, map[string]int{"id": bankCardsID}, "bank card succesfully created")
 }
 
+// GetBankCardsByUserID handles HTTP requests for retrieving bank cards by user ID.
 func (gh *GophKeeperBankCardsHandlers) GetBankCardsByUserID(w http.ResponseWriter, r *http.Request) {
 	claims, err := jwt.GetJwtClaims(r)
 	if err != nil {
@@ -92,6 +99,7 @@ func (gh *GophKeeperBankCardsHandlers) GetBankCardsByUserID(w http.ResponseWrite
 	responseOK(w, r, http.StatusOK, bankCards, "OK")
 }
 
+// GetBankCardsByIDAndUserID handles HTTP requests for retrieving bank cards by ID and user ID.
 func (gh *GophKeeperBankCardsHandlers) GetBankCardsByIDAndUserID(w http.ResponseWriter, r *http.Request) {
 	bankCardsID, userID, err := gh.getBankCardsIDAndUserID(w, r)
 	if err != nil {
@@ -109,6 +117,7 @@ func (gh *GophKeeperBankCardsHandlers) GetBankCardsByIDAndUserID(w http.Response
 	responseOK(w, r, http.StatusOK, bankCards, "OK")
 }
 
+// UpdateBankCardsByIDAndUserID handles HTTP requests for updating bank cards by ID and user ID.
 func (gh *GophKeeperBankCardsHandlers) UpdateBankCardsByIDAndUserID(w http.ResponseWriter, r *http.Request) {
 	bankCardID, userID, err := gh.getBankCardsIDAndUserID(w, r)
 	if err != nil {
@@ -131,6 +140,7 @@ func (gh *GophKeeperBankCardsHandlers) UpdateBankCardsByIDAndUserID(w http.Respo
 	responseOK(w, r, http.StatusOK, "", "updated")
 }
 
+// DeleteBankCardsByIDAndUserID handles HTTP requests for deleting bank cards by ID and user ID.
 func (gh *GophKeeperBankCardsHandlers) DeleteBankCardsByIDAndUserID(w http.ResponseWriter, r *http.Request) {
 	bankCardID, userID, err := gh.getBankCardsIDAndUserID(w, r)
 	if err != nil {
@@ -146,6 +156,7 @@ func (gh *GophKeeperBankCardsHandlers) DeleteBankCardsByIDAndUserID(w http.Respo
 	responseOK(w, r, http.StatusNoContent, "", "deleted")
 }
 
+// getBankCardsIDAndUserID extracts bank cards ID and user ID from the request.
 func (gh *GophKeeperBankCardsHandlers) getBankCardsIDAndUserID(w http.ResponseWriter, r *http.Request) (int, int, error) {
 	claims, err := jwt.GetJwtClaims(r)
 	if err != nil {

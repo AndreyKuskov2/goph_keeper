@@ -11,6 +11,7 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
+// Main router for the GophKeeper server.
 func GophKeeperHTTPRouter(cfg *config.Config, storage storage.Storager) http.Handler {
 	r := chi.NewRouter()
 

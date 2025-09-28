@@ -15,16 +15,21 @@ import (
 	"github.com/go-chi/render"
 )
 
+// GophKeeperUserServicer defines the interface for user service operations.
+// It provides methods for user registration and authentication.
 type GophKeeperUserServicer interface {
-	RegisterUserService(ctx context.Context, user models.User) (int, error)
-	GetUserService(ctx context.Context, user models.UserLoginRequest) (int, error)
+	RegisterUserService(ctx context.Context, user models.User) (int, error)        // RegisterUserService creates a new user account
+	GetUserService(ctx context.Context, user models.UserLoginRequest) (int, error) // GetUserService authenticates a user and returns user ID
 }
 
+// GophKeeperUserHandlers handles HTTP requests related to user management.
+// It provides endpoints for user registration and authentication.
 type GophKeeperUserHandlers struct {
-	service GophKeeperUserServicer
-	cfg     *config.Config
+	service GophKeeperUserServicer // Service layer for business logic
+	cfg     *config.Config         // Server configuration
 }
 
+// NewGophKeeperUserHandlers creates a new instance of GophKeeperUserHandlers.
 func NewGophKeeperUserHandlers(service GophKeeperUserServicer, cfg *config.Config) *GophKeeperUserHandlers {
 	return &GophKeeperUserHandlers{
 		service: service,
@@ -32,6 +37,7 @@ func NewGophKeeperUserHandlers(service GophKeeperUserServicer, cfg *config.Confi
 	}
 }
 
+// RegisterUserHandler handles HTTP requests for user registration.
 func (gh *GophKeeperUserHandlers) RegisterUserHandler(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 
@@ -65,6 +71,7 @@ func (gh *GophKeeperUserHandlers) RegisterUserHandler(w http.ResponseWriter, r *
 	responseOK(w, r, http.StatusCreated, resp, "user succesfully created")
 }
 
+// LoginUserHandler handles HTTP requests for user authentication.
 func (gh *GophKeeperUserHandlers) LoginUserHandler(w http.ResponseWriter, r *http.Request) {
 	var user models.UserLoginRequest
 

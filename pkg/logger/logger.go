@@ -1,3 +1,5 @@
+// Package logger provides structured logging functionality using Go's slog package.
+// It configures a JSON-based logger with configurable log levels and source information.
 package logger
 
 import (
@@ -5,6 +7,7 @@ import (
 	"os"
 )
 
+// NewLogger initializes and configures the global logger with the specified settings.
 func NewLogger(isDebug bool, addSource bool) {
 	level := slog.LevelInfo
 	if isDebug {

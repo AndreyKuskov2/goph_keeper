@@ -1,3 +1,5 @@
+// Package config provides configuration management for the GophKeeper server.
+// It handles loading configuration from YAML files, command-line flags, and environment variables.
 package config
 
 import (
@@ -10,6 +12,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+// NewConfig creates and loads a new configuration instance.
 func NewConfig() (*Config, error) {
 	var flags Flags
 

@@ -12,6 +12,7 @@ import (
 	"syscall"
 )
 
+// Run starts the GophKeeper server.
 func Run(cfg *config.Config) {
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)

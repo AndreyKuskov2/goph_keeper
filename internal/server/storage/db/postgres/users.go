@@ -9,6 +9,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// CreateUser creates a new user.
 func (pg *Postgres) CreateUser(ctx context.Context, user models.User) (int, error) {
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(user.Password), 14)
 	if err != nil {
@@ -27,6 +28,7 @@ func (pg *Postgres) CreateUser(ctx context.Context, user models.User) (int, erro
 	return userID, nil
 }
 
+// GetUserByLogin gets a user by login.
 func (db *Postgres) GetUserByLogin(ctx context.Context, user models.UserLoginRequest) (int, error) {
 	var userID int
 	var passwordHash string

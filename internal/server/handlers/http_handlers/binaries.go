@@ -13,6 +13,8 @@ import (
 	"github.com/go-chi/render"
 )
 
+// GophKeeperBinariesDataServicer defines the interface for binaries data service operations.
+// It provides methods for creating, retrieving, updating, and deleting binaries data.
 type GophKeeperBinariesDataServicer interface {
 	CreateBinariesData(ctx context.Context, binariesData *models.BinariesData) (int, error)
 	GetBinariesDataByUserID(ctx context.Context, userID int) ([]models.BinariesData, error)
@@ -21,11 +23,14 @@ type GophKeeperBinariesDataServicer interface {
 	DeleteBinariesDataByIDAndUserID(ctx context.Context, binariesDataID, userID int) error
 }
 
+// GophKeeperBinariesDataHandlers handles HTTP requests related to binaries data management.
+// It provides endpoints for creating, retrieving, updating, and deleting binaries data.
 type GophKeeperBinariesDataHandlers struct {
 	service GophKeeperBinariesDataServicer
 	cfg     *config.Config
 }
 
+// NewGophKeeperBinariesDataHandlers creates a new instance of GophKeeperBinariesDataHandlers.
 func NewGophKeeperBinariesDataHandlers(service GophKeeperBinariesDataServicer, cfg *config.Config) *GophKeeperBinariesDataHandlers {
 	return &GophKeeperBinariesDataHandlers{
 		service: service,
@@ -33,6 +38,7 @@ func NewGophKeeperBinariesDataHandlers(service GophKeeperBinariesDataServicer, c
 	}
 }
 
+// CreateBinariesData handles HTTP requests for creating new binaries data.
 func (gh *GophKeeperBinariesDataHandlers) CreateBinariesData(w http.ResponseWriter, r *http.Request) {
 	var binariesData models.BinariesData
 	if err := render.Bind(r, &binariesData); err != nil {
@@ -67,6 +73,7 @@ func (gh *GophKeeperBinariesDataHandlers) CreateBinariesData(w http.ResponseWrit
 	responseOK(w, r, http.StatusCreated, map[string]int{"id": binariesDataID}, "binaries data succesfully created")
 }
 
+// GetBinariesDataByUserID handles HTTP requests for retrieving binaries data by user ID.
 func (gh *GophKeeperBinariesDataHandlers) GetBinariesDataByUserID(w http.ResponseWriter, r *http.Request) {
 	claims, err := jwt.GetJwtClaims(r)
 	if err != nil {
@@ -92,6 +99,7 @@ func (gh *GophKeeperBinariesDataHandlers) GetBinariesDataByUserID(w http.Respons
 	responseOK(w, r, http.StatusOK, binariesData, "OK")
 }
 
+// GetBinariesDataByIDAndUserID handles HTTP requests for retrieving binaries data by ID and user ID.
 func (gh *GophKeeperBinariesDataHandlers) GetBinariesDataByIDAndUserID(w http.ResponseWriter, r *http.Request) {
 	binariesDataID, userID, err := gh.getBinariesDataIDAndUserID(w, r)
 	if err != nil {
@@ -109,6 +117,7 @@ func (gh *GophKeeperBinariesDataHandlers) GetBinariesDataByIDAndUserID(w http.Re
 	responseOK(w, r, http.StatusOK, BinariesData, "OK")
 }
 
+// UpdateBinariesDataByIDAndUserID handles HTTP requests for updating binaries data by ID and user ID.
 func (gh *GophKeeperBinariesDataHandlers) UpdateBinariesDataByIDAndUserID(w http.ResponseWriter, r *http.Request) {
 	binariesDataID, userID, err := gh.getBinariesDataIDAndUserID(w, r)
 	if err != nil {
@@ -131,6 +140,7 @@ func (gh *GophKeeperBinariesDataHandlers) UpdateBinariesDataByIDAndUserID(w http
 	responseOK(w, r, http.StatusOK, "", "updated")
 }
 
+// DeleteBinariesDataByIDAndUserID handles HTTP requests for deleting binaries data by ID and user ID.
 func (gh *GophKeeperBinariesDataHandlers) DeleteBinariesDataByIDAndUserID(w http.ResponseWriter, r *http.Request) {
 	binariesDataID, userID, err := gh.getBinariesDataIDAndUserID(w, r)
 	if err != nil {
@@ -146,6 +156,7 @@ func (gh *GophKeeperBinariesDataHandlers) DeleteBinariesDataByIDAndUserID(w http
 	responseOK(w, r, http.StatusNoContent, "", "deleted")
 }
 
+// getBinariesDataIDAndUserID extracts binaries data ID and user ID from the request.
 func (gh *GophKeeperBinariesDataHandlers) getBinariesDataIDAndUserID(w http.ResponseWriter, r *http.Request) (int, int, error) {
 	claims, err := jwt.GetJwtClaims(r)
 	if err != nil {

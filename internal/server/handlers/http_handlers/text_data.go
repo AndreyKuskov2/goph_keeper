@@ -13,6 +13,8 @@ import (
 	"github.com/go-chi/render"
 )
 
+// GophKeeperTextDataServicer defines the interface for text data service operations.
+// It provides methods for creating, retrieving, updating, and deleting text data.
 type GophKeeperTextDataServicer interface {
 	CreateTextData(ctx context.Context, textData *models.TextData) (int, error)
 	GetTextDataByUserID(ctx context.Context, userID int) ([]models.TextData, error)
@@ -21,11 +23,14 @@ type GophKeeperTextDataServicer interface {
 	DeleteTextDataByIDAndUserID(ctx context.Context, textDataID, userID int) error
 }
 
+// GophKeeperTextDataHandlers handles HTTP requests related to text data management.
+// It provides endpoints for creating, retrieving, updating, and deleting text data.
 type GophKeeperTextDataHandlers struct {
 	service GophKeeperTextDataServicer
 	cfg     *config.Config
 }
 
+// NewGophKeeperTextDataHandlers creates a new instance of GophKeeperTextDataHandlers.
 func NewGophKeeperTextDataHandlers(service GophKeeperTextDataServicer, cfg *config.Config) *GophKeeperTextDataHandlers {
 	return &GophKeeperTextDataHandlers{
 		service: service,
@@ -33,6 +38,7 @@ func NewGophKeeperTextDataHandlers(service GophKeeperTextDataServicer, cfg *conf
 	}
 }
 
+// CreateTextData handles HTTP requests for creating new text data.
 func (gh *GophKeeperTextDataHandlers) CreateTextData(w http.ResponseWriter, r *http.Request) {
 	var textData models.TextData
 	if err := render.Bind(r, &textData); err != nil {
@@ -67,6 +73,7 @@ func (gh *GophKeeperTextDataHandlers) CreateTextData(w http.ResponseWriter, r *h
 	responseOK(w, r, http.StatusCreated, map[string]int{"id": textDataID}, "text data succesfully created")
 }
 
+// GetTextDataByUserID handles HTTP requests for retrieving text data by user ID.
 func (gh *GophKeeperTextDataHandlers) GetTextDataByUserID(w http.ResponseWriter, r *http.Request) {
 	claims, err := jwt.GetJwtClaims(r)
 	if err != nil {
@@ -92,6 +99,7 @@ func (gh *GophKeeperTextDataHandlers) GetTextDataByUserID(w http.ResponseWriter,
 	responseOK(w, r, http.StatusOK, textData, "OK")
 }
 
+// GetTextDataByIDAndUserID handles HTTP requests for retrieving text data by ID and user ID.
 func (gh *GophKeeperTextDataHandlers) GetTextDataByIDAndUserID(w http.ResponseWriter, r *http.Request) {
 	textDataID, userID, err := gh.getTextDataIDAndUserID(w, r)
 	if err != nil {
@@ -109,6 +117,7 @@ func (gh *GophKeeperTextDataHandlers) GetTextDataByIDAndUserID(w http.ResponseWr
 	responseOK(w, r, http.StatusOK, textData, "OK")
 }
 
+// UpdateTextDataByIDAndUserID handles HTTP requests for updating text data by ID and user ID.
 func (gh *GophKeeperTextDataHandlers) UpdateTextDataByIDAndUserID(w http.ResponseWriter, r *http.Request) {
 	textDataID, userID, err := gh.getTextDataIDAndUserID(w, r)
 	if err != nil {
@@ -131,6 +140,7 @@ func (gh *GophKeeperTextDataHandlers) UpdateTextDataByIDAndUserID(w http.Respons
 	responseOK(w, r, http.StatusOK, "", "updated")
 }
 
+// DeleteTextDataByIDAndUserID handles HTTP requests for deleting text data by ID and user ID.
 func (gh *GophKeeperTextDataHandlers) DeleteTextDataByIDAndUserID(w http.ResponseWriter, r *http.Request) {
 	textDataID, userID, err := gh.getTextDataIDAndUserID(w, r)
 	if err != nil {
@@ -146,6 +156,7 @@ func (gh *GophKeeperTextDataHandlers) DeleteTextDataByIDAndUserID(w http.Respons
 	responseOK(w, r, http.StatusNoContent, "", "deleted")
 }
 
+// getTextDataIDAndUserID extracts text data ID and user ID from the request.
 func (gh *GophKeeperTextDataHandlers) getTextDataIDAndUserID(w http.ResponseWriter, r *http.Request) (int, int, error) {
 	claims, err := jwt.GetJwtClaims(r)
 	if err != nil {
